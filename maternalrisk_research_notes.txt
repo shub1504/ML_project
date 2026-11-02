@@ -1,0 +1,42 @@
+MaternalRisk AI — Research Notes
+================================
+
+Objective
+---------
+Compare machine-learning classifiers for three-class maternal
+health risk classification on the UCI Maternal Health Risk dataset.
+
+Dataset
+-------
+1014 observations; 6 input features; target: RiskLevel.
+Classes: low risk, mid risk, high risk.
+
+Validation
+----------
+Grouped cross-validation was used to keep identical observed
+feature profiles in the same fold. Hyperparameter selection and
+exploratory class-weight experiments were also performed.
+
+Interpretation
+--------------
+SVM was the leading baseline in the experiments conducted.
+Mid-risk recall remained a key limitation. Increasing the
+mid-risk class weight improved its recall but reduced recall
+for other classes in the tested comparison.
+
+Feature importance
+------------------
+Permutation importance was calculated across five held-out
+grouped folds. Blood sugar and systolic blood pressure had the
+largest mean F1 decreases when shuffled in this experiment.
+Importance is predictive, not causal or clinical evidence.
+
+Limitations
+-----------
+- The dataset is small and contains repeated feature profiles.
+- Identical observed profiles sometimes have conflicting labels.
+- Results are cross-validation estimates, not external validation.
+- Selecting configurations after inspecting CV results can
+  introduce selection optimism.
+- The model is a research prototype, not a clinical decision tool.
+- Generalization to other populations, including India, is unknown.

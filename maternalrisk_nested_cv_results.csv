@@ -1,0 +1,4 @@
+Model,Nested OOF Macro F1,Nested OOF Balanced Accuracy,High-Risk Recall,Mid-Risk Recall
+SVM,0.6615,0.6687,0.8015,0.4018
+Decision Tree,0.6078,0.6178,0.7353,0.3274
+Logistic Regression,0.5896,0.5911,0.6875,0.3542

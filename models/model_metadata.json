@@ -1,0 +1,33 @@
+
+{
+  "model_name": "MaternalRisk AI baseline SVM",
+  "model_type": "scikit-learn Pipeline",
+  "algorithm": "RBF SVM",
+  "features": [
+    "Age",
+    "SystolicBP",
+    "DiastolicBP",
+    "BS",
+    "BodyTemp",
+    "HeartRate"
+  ],
+  "target": "RiskLevel",
+  "classes": [
+    "high risk",
+    "low risk",
+    "mid risk"
+  ],
+  "preprocessing": [
+    "SimpleImputer(strategy='median')",
+    "StandardScaler()"
+  ],
+  "parameters": {
+    "kernel": "rbf",
+    "C": 10,
+    "gamma": 0.01,
+    "class_weight": null
+  },
+  "training_records": 1014,
+  "dataset": "UCI Maternal Health Risk dataset supplied by user",
+  "validation_note": "This artifact is fitted on the full supplied dataset for prototype inference. Reported grouped cross-validation estimates remain separate; this artifact is not clinically validated."
+}
