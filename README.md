@@ -13,6 +13,21 @@ An experimental **maternal-health risk classification** project: an SVM model tr
 - **Conversational assistant:** chat with an Azure AI Foundry-backed agent that calls the risk assessment through a registered tool.
 - **Rigorous evaluation:** nested cross-validation, class-wise recall analysis, class-weight diagnostics, and permutation importance.
 
+### Feature Importance (Permutation, 5-fold)
+
+Importance is measured as the mean drop in F1 when a feature is shuffled.
+
+| Rank | Feature | Mean F1 decrease | Across-fold SD | Mean within-fold permutation SD |
+|---|---|---|---|---|
+| 1 | BS (blood sugar) | 0.140 | 0.031 | 0.022 |
+| 2 | SystolicBP | 0.122 | 0.040 | 0.022 |
+| 3 | DiastolicBP | 0.082 | 0.041 | 0.023 |
+| 4 | BodyTemp | 0.070 | 0.044 | 0.020 |
+| 5 | HeartRate | 0.026 | 0.046 | 0.013 |
+| 6 | Age | 0.021 | 0.033 | 0.008 |
+
+**Key takeaway:** blood sugar and systolic blood pressure matter most. For HeartRate and Age, the across-fold SD is larger than the mean F1 decrease, so their contribution is small and not stable across folds.
+
 ---
 
 ## Architecture
@@ -108,11 +123,42 @@ Evaluation was done with **nested cross-validation** to avoid optimistic bias, w
 ### Visualizations
 
 - Confusion matrix: `assets/visualizations/maternalrisk_svm_confusion_matrix.svg`
+![6147792277867710094](https://github.com/shub1504/ML_project/blob/main/assets/visualizations/maternalrisk_svm_confusion_matrix.svg)
+
 - Class-wise recall: `assets/visualizations/maternalrisk_svm_class_recall.svg`
+![6147792277867710094](https://github.com/shub1504/ML_project/blob/main/assets/visualizations/maternalrisk_svm_class_recall.svg)
+
+### Class-wise Results
+
+Two strategies compared: a fixed unweighted SVM, and an SVM whose class weight was selected by inner cross-validation.
+
+| Strategy | Risk class | Precision | Recall | F1 score | Support |
+|---|---|---|---|---|---|
+| Fixed unweighted SVM | Low risk | 0.655 | 0.842 | 0.737 | 406 |
+| Fixed unweighted SVM | Mid risk | 0.594 | 0.396 | 0.475 | 336 |
+| Fixed unweighted SVM | High risk | 0.813 | 0.801 | 0.807 | 272 |
+| Inner-CV-selected class weight | Low risk | 0.655 | 0.842 | 0.737 | 406 |
+| Inner-CV-selected class weight | Mid risk | 0.592 | 0.420 | 0.491 | 336 |
+| Inner-CV-selected class weight | High risk | 0.835 | 0.779 | 0.806 | 272 |
+
+**Key takeaway:** mid-risk is the hardest class. Class weighting lifts its recall (0.396 → 0.420) and F1 (0.475 → 0.491), at a small cost to high-risk recall.
+
 - Feature vs. class correlation: `assets/visualizations/maternalrisk_feature_class_correlation.svg`
+![6147792277867710094](https://github.com/shub1504/ML_project/blob/main/assets/visualizations/maternalrisk_feature_class_correlation.svg)
+
 - Permutation importance: `assets/visualizations/maternalrisk_svm_permutation_importance_5fold.svg`
+![6147792277867710094](https://github.com/shub1504/ML_project/blob/main/assets/visualizations/maternalrisk_svm_permutation_importance_5fold.svg)
 
 ---
+
+### Overall Results
+
+| Strategy | Accuracy | Macro precision | Macro recall (balanced acc.) | Macro F1 |
+|---|---|---|---|---|
+| Fixed unweighted SVM | 0.683 | 0.687 | 0.680 | 0.673 |
+| Inner-CV-selected class weight | 0.685 | 0.694 | 0.680 | 0.678 |
+
+Metrics are computed with nested cross-validation. Class weighting gives only a modest gain overall (+0.2 pts accuracy, +0.5 pts macro F1), so the main limitation remains the mid-risk class.
 
 ## Getting Started
 
