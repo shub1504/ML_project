@@ -218,7 +218,3 @@ Python, scikit-learn (SVM), Streamlit, Jupyter, Azure AI Foundry (agent framewor
 
 ---
 
-## Author
-
-**Shub**, B.Sc. (Hons.) Computer Science, Ramanujan College, University of Delhi.
-GitHub: [@shub1504](https://github.com/shub1504)
